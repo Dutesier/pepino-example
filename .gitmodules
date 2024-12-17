@@ -1,0 +1,3 @@
+[submodule "pepino"]
+	path = pepino
+	url = git@github.com:Dutesier/pepino.git
