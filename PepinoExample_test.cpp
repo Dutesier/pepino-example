@@ -17,7 +17,9 @@
 // FOR TESTING ONLY
 
 #include "PepinoExample.hpp"
-#include "pepino/include/pepino.h"
+#include <pepino/pepino.h>
+#include <pepino/context.h>
+#include <pepino/steps/steps.h>
 #include <gtest/gtest.h>
 
 class MyContext : public pep::Context<MyContext>

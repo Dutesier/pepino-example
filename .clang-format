@@ -1,0 +1,17 @@
+BasedOnStyle: Microsoft
+AccessModifierOffset: -4
+# separate per line class constructors, inheritance and function parameters
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackArguments: false
+BinPackParameters: false
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+BraceWrapping:
+  BeforeLambdaBody: true
+AlignAfterOpenBracket: AlwaysBreak
+AllowShortFunctionsOnASingleLine: Inline
+ColumnLimit: 120
+Cpp11BracedListStyle: false
+PenaltyBreakAssignment: 50
+PenaltyReturnTypeOnItsOwnLine: 0
+PointerAlignment: Left
