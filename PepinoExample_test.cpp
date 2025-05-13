@@ -17,27 +17,43 @@
 // FOR TESTING ONLY
 
 #include "PepinoExample.hpp"
-#include "pepino.h"
+#include "pepino/include/pepino.h"
+#include <pepino.h>
 #include <gtest/gtest.h>
 
-using namespace examples;
-
-WHEN(
-    "the user adds {a:d} and {b:d}",
-    [](double a, double b)
-    {
-        Calculator calc;
-        EXPECT_DOUBLE_EQ(calc.add(1.0, 2.0), 3.0);
-    })
-
-TEST(PepinoExample, run)
+class MyContext : public pep::Context<MyContext>
 {
-    // In the future this will be incapsulated here:
-    pep::run("main.feature");
+public:
+    double lastResult;
+    std::unique_ptr<examples::Calculator> calc;
+};
+
+
+
+GIVEN_CTX(MyContext, "the calculator is on", [](MyContext& ctx){
+    ctx.calc = std::make_unique<examples::Calculator>();
+})
+
+WHEN_CTX(MyContext, "I multiply (\\d+) and (\\d+)", [](MyContext& ctx, int x, int y)
+     {
+         ctx.lastResult = ctx.calc->multiply(x, y); 
+     }
+)
+
+THEN_CTX(MyContext, "the result should be (\\d+)", [](MyContext& ctx, double result){
+    assert(ctx.lastResult == result);
+})
+
+TEST(BasicCalculatorTest, TestCalculator)
+{
+    ASSERT_EQ(pep::run("calculator.feature"), 0);
 }
 
-int main(int argc, char** argv)
+int main(void)
 {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+  // your setup ...
+
+  // your clean-up...
+
+  return 0;
 }

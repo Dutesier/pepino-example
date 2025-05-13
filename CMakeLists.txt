@@ -7,23 +7,14 @@ project(PepinoExample)
 add_subdirectory(pepino)
 
 # Add the executable
-add_executable(PepinoExample PepinoExample.cpp)
+add_library(PepinoExample PepinoExample.cpp)
 
 # Link the pepino library
 target_link_libraries(PepinoExample PUBLIC pepino)
 
-# Enable testing
-enable_testing()
+find_package(GTest)
 
-# Add Google Test
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+add_executable(PepinoExampleTest PepinoExample_test.cpp) 
 
-# Add the test executable
-add_executable(PepinoExampleTest PepinoExample_test.cpp)
+target_link_libraries(PepinoExampleTest PRIVATE PepinoExample GTest::gtest_main)
 
-# Link the test executable against gtest and gtest_main
-target_link_libraries(PepinoExampleTest PRIVATE GTest::GTest GTest::Main pepino)
-
-# Add a test
-add_test(NAME PepinoExampleTest COMMAND PepinoExampleTest)
