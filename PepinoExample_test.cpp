@@ -18,7 +18,6 @@
 
 #include "PepinoExample.hpp"
 #include "pepino/include/pepino.h"
-#include <pepino.h>
 #include <gtest/gtest.h>
 
 class MyContext : public pep::Context<MyContext>
@@ -28,32 +27,22 @@ public:
     std::unique_ptr<examples::Calculator> calc;
 };
 
+GIVEN_CTX(MyContext, "the calculator is on", [](MyContext &ctx) {
+  ctx.calc = std::make_unique<examples::Calculator>();
+});
 
+WHEN_CTX(MyContext, "I multiply (\\d+) and (\\d+)",
+         [](MyContext &ctx, int x, int y) {
+           ctx.lastResult = ctx.calc->multiply(x, y);
+         });
 
-GIVEN_CTX(MyContext, "the calculator is on", [](MyContext& ctx){
-    ctx.calc = std::make_unique<examples::Calculator>();
-})
-
-WHEN_CTX(MyContext, "I multiply (\\d+) and (\\d+)", [](MyContext& ctx, int x, int y)
-     {
-         ctx.lastResult = ctx.calc->multiply(x, y); 
-     }
-)
-
-THEN_CTX(MyContext, "the result should be (\\d+)", [](MyContext& ctx, double result){
-    assert(ctx.lastResult == result);
-})
+THEN_CTX(MyContext, "the result should be (\\d+)",
+         [](MyContext &ctx, double result) {
+           assert(ctx.lastResult == result);
+         });
 
 TEST(BasicCalculatorTest, TestCalculator)
 {
     ASSERT_EQ(pep::run("calculator.feature"), 0);
 }
 
-int main(void)
-{
-  // your setup ...
-
-  // your clean-up...
-
-  return 0;
-}
